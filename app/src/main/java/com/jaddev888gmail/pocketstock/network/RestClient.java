@@ -9,7 +9,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestClient {
-    private static final String BASE_URL = "https://api.iextrading.com/1.0";
+    private static final String BASE_URL = "https://api.iextrading.com/1.0/";
     private final IexApi iexApi;
 
     public RestClient() {
