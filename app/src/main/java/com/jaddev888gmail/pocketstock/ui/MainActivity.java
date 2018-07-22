@@ -1,5 +1,6 @@
 package com.jaddev888gmail.pocketstock.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -33,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
         setSupportActionBar(toolbar);
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
@@ -41,8 +41,11 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Add stock to portfolio", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
+                Intent addStockActivity = new Intent(getApplicationContext(), AddStockActivity.class);
+                startActivity(addStockActivity);
             }
         });
     }
