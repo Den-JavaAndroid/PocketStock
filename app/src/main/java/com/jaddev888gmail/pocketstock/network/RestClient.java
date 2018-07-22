@@ -3,6 +3,9 @@ package com.jaddev888gmail.pocketstock.network;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.jaddev888gmail.pocketstock.model.news.NewsRs;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -25,8 +28,12 @@ public class RestClient {
         iexApi = retrofit.create(IexApi.class);
     }
 
-    public Call<Double> getPrice(String ticker){
+    public Call<Double> getPrice(String ticker) {
         return iexApi.getPrice(ticker);
+    }
+
+    public Call<List<NewsRs>> getStockNews(String ticker) {
+        return iexApi.getStockNews(ticker);
     }
 
 }
