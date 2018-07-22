@@ -27,8 +27,11 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
-
         </activity>
+
+        <provider
+            android:authorities="com.jaddev888gmail.pocketstock.database"
+            android:name=".database.PortfolioContentProvider"/>
     </application>
 
 </manifest>

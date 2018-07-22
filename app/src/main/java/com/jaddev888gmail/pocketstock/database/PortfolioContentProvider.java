@@ -40,7 +40,8 @@ public class PortfolioContentProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        return false;
+        portfolioDbHelper = new PortfolioDbHelper(getContext());
+        return true;
     }
 
     @Nullable
