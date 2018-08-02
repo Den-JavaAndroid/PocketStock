@@ -92,6 +92,7 @@ public class PortfolioFragment extends Fragment {
                 PortfolioItem portfolioItem = new PortfolioItem();
                 portfolioItem.setTicker(data.getString(0));
                 portfolioItem.setStockCount(data.getInt(1));
+                portfolioItem.setStockPrice(data.getDouble(2));
                 portfolioItemList.add(portfolioItem);
             }
             PortfolioAdapter portfolioAdapter = new PortfolioAdapter(getContext(), portfolioItemList);

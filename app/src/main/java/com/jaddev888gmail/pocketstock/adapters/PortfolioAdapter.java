@@ -36,6 +36,7 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.stockName.setText(portfolioItems.get(position).getTicker());
         holder.count.setText(portfolioItems.get(position).getStockCount()+"");
+        holder.price.setText(portfolioItems.get(position).getStockPrice()+"");
     }
 
     @Override
@@ -46,11 +47,14 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder {
         final TextView stockName;
         final TextView count;
+        final TextView price;
 
         public ViewHolder(View itemView) {
             super(itemView);
             stockName = itemView.findViewById(R.id.stockName);
             count = itemView.findViewById(R.id.count);
+            price = itemView.findViewById(R.id.price);
+
         }
     }
 }

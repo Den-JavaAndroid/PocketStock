@@ -14,7 +14,8 @@ public class PortfolioDbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_CREATE = "create table "
             + PortfolioContract.PortfolioEntry.TABLE_NAME + "( " +
             PortfolioContract.PortfolioEntry.STOCK_SYMBOL + " text primary key, " +
-            PortfolioContract.PortfolioEntry.STOCK_COUNT + " integer not null);";
+            PortfolioContract.PortfolioEntry.STOCK_COUNT + " integer not null, " +
+            PortfolioContract.PortfolioEntry.STOCK_PRICE + " real not null);";
 
     public PortfolioDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
