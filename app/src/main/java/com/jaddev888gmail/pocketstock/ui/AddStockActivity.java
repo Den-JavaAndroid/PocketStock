@@ -99,23 +99,27 @@ public class AddStockActivity extends AppCompatActivity {
             public void onResponse(Call<Double> call, Response<Double> response) {
                 price[0] = response.body();
                 ContentValues portfolioItemValues = new ContentValues();
-                portfolioItemValues.put(PortfolioContract.PortfolioEntry.STOCK_PRICE, price[0]);
 
-                if (hasStockInPortfolio(stockSymbol)) {
-                    Integer newStockCount = Integer.valueOf(stockCount) + getCountStockInPortfolio(stockSymbol);
+                if (price[0] != null) {
+                    portfolioItemValues.put(PortfolioContract.PortfolioEntry.STOCK_PRICE, price[0]);
 
-                    portfolioItemValues.put(PortfolioContract.PortfolioEntry.STOCK_SYMBOL, stockSymbol);
-                    portfolioItemValues.put(PortfolioContract.PortfolioEntry.STOCK_COUNT, newStockCount);
-                    getContentResolver().update(Uri.parse(PortfolioContentProvider.URI_PORTFOLIO+ "/" + stockSymbol), portfolioItemValues, null, null);
+                    if (hasStockInPortfolio(stockSymbol)) {
+                        Integer newStockCount = Integer.valueOf(stockCount) + getCountStockInPortfolio(stockSymbol);
 
-                } else {
-                    portfolioItemValues.put(PortfolioContract.PortfolioEntry.STOCK_SYMBOL, stockSymbol);
-                    portfolioItemValues.put(PortfolioContract.PortfolioEntry.STOCK_COUNT, Integer.parseInt(stockCount));
-                    getContentResolver().insert(PortfolioContentProvider.URI_PORTFOLIO, portfolioItemValues);
-                }
+                        portfolioItemValues.put(PortfolioContract.PortfolioEntry.STOCK_SYMBOL, stockSymbol);
+                        portfolioItemValues.put(PortfolioContract.PortfolioEntry.STOCK_COUNT, newStockCount);
+                        getContentResolver().update(Uri.parse(PortfolioContentProvider.URI_PORTFOLIO + "/" + stockSymbol), portfolioItemValues, null, null);
 
-                Toast.makeText(AddStockActivity.this, stockCount + " shares of " + stockSymbol +
-                        " added to the portfolio", Toast.LENGTH_LONG).show();
+                    } else {
+                        portfolioItemValues.put(PortfolioContract.PortfolioEntry.STOCK_SYMBOL, stockSymbol);
+                        portfolioItemValues.put(PortfolioContract.PortfolioEntry.STOCK_COUNT, Integer.parseInt(stockCount));
+                        getContentResolver().insert(PortfolioContentProvider.URI_PORTFOLIO, portfolioItemValues);
+                    }
+
+                    Toast.makeText(AddStockActivity.this, stockCount + " shares of " + stockSymbol +
+                            " added to the portfolio", Toast.LENGTH_LONG).show();
+                } else
+                    Toast.makeText(AddStockActivity.this, stockSymbol + " not exist on market. Please check your choose.", Toast.LENGTH_LONG).show();
                 finish();
 
             }
