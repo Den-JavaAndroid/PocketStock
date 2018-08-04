@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.jaddev888gmail.pocketstock.R;
 import com.jaddev888gmail.pocketstock.adapters.ViewPagerAdapter;
 
@@ -28,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     ViewPager viewPager;
     @BindView(R.id.tabs)
     TabLayout tabLayout;
+    @BindView(R.id.adView)
+    AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(addStockActivity);
             }
         });
+
+        // Create an ad request. Check logcat output for the hashed device ID to
+        // get test ads on a physical device. e.g.
+        // "Use AdRequest.Builder.addTestDevice("ABCDEF012345") to get test ads on this device."
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        mAdView.loadAd(adRequest);
     }
 
     private void setupViewPager(ViewPager viewPager) {

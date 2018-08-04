@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.jaddev888gmail.pocketstock.R;
 import com.jaddev888gmail.pocketstock.adapters.PortfolioAdapter;
 import com.jaddev888gmail.pocketstock.database.PortfolioContentProvider;
@@ -61,6 +63,7 @@ public class PortfolioFragment extends Fragment {
         restClient = new RestClient();
         stockListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         loadPortfolioFromDb();
+
 
         return view;
     }
