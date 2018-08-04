@@ -33,6 +33,10 @@ public class PortfolioFragment extends Fragment {
 
     @BindView(R.id.summ_money)
     TextView totalMoney;
+
+    @BindView(R.id.summ_stocks)
+    TextView totalStocks;
+
     private RestClient restClient;
     @BindView(R.id.stock_list)
     RecyclerView stockListRecyclerView;
@@ -58,43 +62,30 @@ public class PortfolioFragment extends Fragment {
         stockListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         loadPortfolioFromDb();
 
-
-//        getPrice("aapl");
         return view;
     }
 
 
-    private void getPrice(String ticker) {
-        final Double[] price = new Double[1];
-        restClient.getPrice(ticker).enqueue(new Callback<Double>() {
-            @Override
-            public void onResponse(Call<Double> call, Response<Double> response) {
-                price[0] = response.body();
-                String prices = String.valueOf(price[0]);
-                totalMoney.setText(prices);
-                totalMoney.append("$");
-
-            }
-
-            @Override
-            public void onFailure(Call call, Throwable t) {
-                price[0] = 0.0;
-            }
-        });
-    }
-
     private void loadPortfolioFromDb() {
         Cursor data = getContext().getContentResolver().query(PortfolioContentProvider.URI_PORTFOLIO, null, null, null, null);
+        int summStocks=0;
+        double summMoney=0.0;
 
         if (data.getCount() != 0) {
             portfolioItemList = new ArrayList<>();
             while (data.moveToNext()) {
+                int countStocks = data.getInt(1);
+                summStocks = summStocks+countStocks;
+                summMoney = summMoney + data.getDouble(2)*countStocks;
                 PortfolioItem portfolioItem = new PortfolioItem();
                 portfolioItem.setTicker(data.getString(0));
-                portfolioItem.setStockCount(data.getInt(1));
+                portfolioItem.setStockCount(countStocks);
                 portfolioItem.setStockPrice(data.getDouble(2));
                 portfolioItemList.add(portfolioItem);
             }
+            totalStocks.setText(summStocks+" stocks");
+            String formattedSummMoney = String.format("%.2f", summMoney);
+            totalMoney.setText(formattedSummMoney+"$");
             PortfolioAdapter portfolioAdapter = new PortfolioAdapter(getContext(), portfolioItemList);
             stockListRecyclerView.setAdapter(portfolioAdapter);
         } else {
