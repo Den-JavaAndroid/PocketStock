@@ -1,6 +1,7 @@
 package com.jaddev888gmail.pocketstock.network;
 
 
+import com.jaddev888gmail.pocketstock.model.company.CompanyRs;
 import com.jaddev888gmail.pocketstock.model.news.NewsRs;
 
 import java.util.List;
@@ -19,4 +20,7 @@ public interface IexApi {
     //    /stock/aapl/news
     @GET("stock/{ticker}/news ")
     Call<List<NewsRs>> getStockNews(@Path("ticker") String ticker);
+
+    @GET("stock/{ticker}/company ")
+    Call<CompanyRs> getCompanyInfo(@Path("ticker") String ticker);
 }

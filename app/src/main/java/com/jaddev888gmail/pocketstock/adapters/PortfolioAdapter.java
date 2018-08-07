@@ -2,27 +2,35 @@ package com.jaddev888gmail.pocketstock.adapters;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jaddev888gmail.pocketstock.R;
 import com.jaddev888gmail.pocketstock.model.news.PortfolioItem;
+import com.jaddev888gmail.pocketstock.ui.AddStockActivity;
+import com.jaddev888gmail.pocketstock.ui.PortfolioFragment;
+import com.jaddev888gmail.pocketstock.ui.StockInfoActivity;
 
 import java.util.ArrayList;
 
-public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.ViewHolder>{
+public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.ViewHolder> {
     private final LayoutInflater mInflater;
     private final ArrayList<PortfolioItem> portfolioItems;
     private final Context context;
+    private ItemClickListener mClickListener;
 
-    public PortfolioAdapter(Context context, ArrayList<PortfolioItem> portfolioItems) {
+
+    public PortfolioAdapter(Context context, ArrayList<PortfolioItem> portfolioItems, ItemClickListener itemClickListener) {
         this.mInflater = LayoutInflater.from(context);
         this.portfolioItems = portfolioItems;
         this.context = context;
+        this.mClickListener = itemClickListener;
     }
 
     @NonNull
@@ -35,8 +43,8 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.stockName.setText(portfolioItems.get(position).getTicker());
-        holder.count.setText(portfolioItems.get(position).getStockCount()+"");
-        holder.price.setText(portfolioItems.get(position).getStockPrice()+"");
+        holder.count.setText("Shares " + portfolioItems.get(position).getStockCount());
+        holder.price.setText("Buy price " + portfolioItems.get(position).getStockPrice());
     }
 
     @Override
@@ -44,7 +52,7 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.View
         return portfolioItems.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final TextView stockName;
         final TextView count;
         final TextView price;
@@ -54,7 +62,27 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.View
             stockName = itemView.findViewById(R.id.stockName);
             count = itemView.findViewById(R.id.count);
             price = itemView.findViewById(R.id.price);
+            itemView.setOnClickListener(this);
+        }
+
+
+        @Override
+        public void onClick(View view) {
+            if (mClickListener != null) {
+                Intent stockInfoActivity = new Intent(view.getContext(), StockInfoActivity.class);
+                stockInfoActivity.putExtra("ticker", portfolioItems.get(getAdapterPosition()).getTicker());
+                view.getContext().startActivity(stockInfoActivity);
+            }
 
         }
+    }
+
+    // parent activity will implement this method to respond to click events
+    public interface ItemClickListener {
+        void onItemClick(PortfolioItem portfolioItem);
+    }
+
+    public void setClickListener(ItemClickListener itemClickListener) {
+        this.mClickListener = itemClickListener;
     }
 }

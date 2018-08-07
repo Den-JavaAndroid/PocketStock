@@ -3,6 +3,7 @@ package com.jaddev888gmail.pocketstock.network;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.jaddev888gmail.pocketstock.model.company.CompanyRs;
 import com.jaddev888gmail.pocketstock.model.news.NewsRs;
 
 import java.util.List;
@@ -34,6 +35,10 @@ public class RestClient {
 
     public Call<List<NewsRs>> getStockNews(String ticker) {
         return iexApi.getStockNews(ticker);
+    }
+
+    public Call<CompanyRs> getCompanyInfo(String ticker) {
+        return iexApi.getCompanyInfo(ticker);
     }
 
 }

@@ -43,28 +43,6 @@ public class AddStockActivity extends AppCompatActivity {
         }
 
         restClient = new RestClient();
-
-/*
-            addFavorite.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (isFavoriteMovie()) {
-                        getContentResolver().delete(Uri.parse(MovieInfoContentProvider.URI_MOVIE + "/" + movieInfo.getId()), null, null);
-                    } else {
-
-                        ContentValues movieInfoValues = new ContentValues();
-                        movieInfoValues.put(MovieContract.MovieEntry.MOVIE_ID, movieInfo.getId());
-                        movieInfoValues.put(MovieContract.MovieEntry.TITLE, movieInfo.getTitle());
-                        movieInfoValues.put(MovieContract.MovieEntry.RELEASE_DATE, movieInfo.getReleaseDate());
-                        movieInfoValues.put(MovieContract.MovieEntry.POSTER, movieInfo.getPosterPath());
-                        movieInfoValues.put(MovieContract.MovieEntry.RATING, movieInfo.getVoteAverage());
-                        movieInfoValues.put(MovieContract.MovieEntry.BACKDROP_POSTER, movieInfo.getBackdropPath());
-                        movieInfoValues.put(MovieContract.MovieEntry.OVERVIEW, movieInfo.getOverview());
-                        getContentResolver().insert(MovieInfoContentProvider.URI_MOVIE, movieInfoValues);
-                    }
-                }
-            });
- */
         addStockButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

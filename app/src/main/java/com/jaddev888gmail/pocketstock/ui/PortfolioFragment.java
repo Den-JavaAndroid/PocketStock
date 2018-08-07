@@ -31,7 +31,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class PortfolioFragment extends Fragment {
+public class PortfolioFragment extends Fragment implements PortfolioAdapter.ItemClickListener {
 
     @BindView(R.id.summ_money)
     TextView totalMoney;
@@ -86,10 +86,10 @@ public class PortfolioFragment extends Fragment {
                 portfolioItem.setStockPrice(data.getDouble(2));
                 portfolioItemList.add(portfolioItem);
             }
-            totalStocks.setText(summStocks+" stocks");
+            totalStocks.setText("Bought shares\n" +summStocks);
             String formattedSummMoney = String.format("%.2f", summMoney);
-            totalMoney.setText(formattedSummMoney+"$");
-            PortfolioAdapter portfolioAdapter = new PortfolioAdapter(getContext(), portfolioItemList);
+            totalMoney.setText("Invested money \n" +formattedSummMoney+"$");
+            PortfolioAdapter portfolioAdapter = new PortfolioAdapter(getContext(), portfolioItemList, PortfolioFragment.this);
             stockListRecyclerView.setAdapter(portfolioAdapter);
         } else {
             Toast.makeText(getContext(), "PORTFOLIO IS EMPTY. ADD STOCKS.", Toast.LENGTH_LONG).show();
@@ -100,5 +100,10 @@ public class PortfolioFragment extends Fragment {
     public void onResume() {
         super.onResume();
         loadPortfolioFromDb();
+    }
+
+    @Override
+    public void onItemClick(PortfolioItem portfolioItem) {
+
     }
 }
