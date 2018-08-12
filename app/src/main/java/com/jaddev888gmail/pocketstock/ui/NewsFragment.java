@@ -1,5 +1,6 @@
 package com.jaddev888gmail.pocketstock.ui;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import com.jaddev888gmail.pocketstock.adapters.NewsAdapter;
 import com.jaddev888gmail.pocketstock.model.news.NewsRs;
 import com.jaddev888gmail.pocketstock.network.RestClient;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +28,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class NewsFragment extends Fragment implements NewsAdapter.ItemClickListener{
+public class NewsFragment extends Fragment implements NewsAdapter.ItemClickListener {
 
     @BindView(R.id.news)
     RecyclerView newsRecyclerView;
@@ -57,30 +59,40 @@ public class NewsFragment extends Fragment implements NewsAdapter.ItemClickListe
         return view;
     }
 
-
     private void loadNews(String countDays) {
-        progressBar.setVisibility(View.VISIBLE);
-        newsRecyclerView.setVisibility(View.INVISIBLE);
-        restClient.getLastNews(countDays).enqueue(new Callback<List<NewsRs>>() {
-            @Override
-            public void onResponse(Call<List<NewsRs>> call, Response<List<NewsRs>> response) {
-                Log.i("INFO", "Responce body: " + response.body().toString());
-                newsList = (ArrayList<NewsRs>) response.body();
-                NewsAdapter reciepsAdapter = new NewsAdapter(getContext(), newsList, NewsFragment.this);
-                progressBar.setVisibility(View.INVISIBLE);
-                newsRecyclerView.setVisibility(View.VISIBLE);
-                newsRecyclerView.setAdapter(reciepsAdapter);
-            }
-
-            @Override
-            public void onFailure(Call<List<NewsRs>> call, Throwable t) {
-                Log.e("ERROR", "Error fetching response: \r\n" + t.getMessage());
-            }
-        });
-
+        new LoadNews().execute(countDays);
     }
 
     @Override
     public void onItemClick(NewsRs newsRs) {
+    }
+
+
+    private class LoadNews extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
+            newsRecyclerView.setVisibility(View.INVISIBLE);
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                Response<List<NewsRs>> news = restClient.getLastNews(strings[0]).execute();
+                newsList = (ArrayList<NewsRs>) news.body();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return newsList.toString();
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            NewsAdapter reciepsAdapter = new NewsAdapter(getContext(), newsList, NewsFragment.this);
+            progressBar.setVisibility(View.INVISIBLE);
+            newsRecyclerView.setVisibility(View.VISIBLE);
+            newsRecyclerView.setAdapter(reciepsAdapter);
+        }
     }
 }
