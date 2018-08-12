@@ -2,6 +2,8 @@ package com.jaddev888gmail.pocketstock.adapters;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -60,7 +62,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         public void onClick(View view) {
             if (mClickListener != null) {
                 mClickListener.onItemClick(news.get(getAdapterPosition()));
-                Toast.makeText(context,"Open news " + news.get(getAdapterPosition()).getDatetime(), Toast.LENGTH_LONG).show();
+                Toast.makeText(context,"Open news " + news.get(getAdapterPosition()).getHeadline(), Toast.LENGTH_LONG).show();
+                Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(news.get(getAdapterPosition()).getUrl()));
+                context.startActivity(myIntent);
 
             }
 

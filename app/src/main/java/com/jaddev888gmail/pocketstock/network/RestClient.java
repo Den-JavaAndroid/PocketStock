@@ -33,8 +33,8 @@ public class RestClient {
         return iexApi.getPrice(ticker);
     }
 
-    public Call<List<NewsRs>> getStockNews(String ticker) {
-        return iexApi.getStockNews(ticker);
+    public Call<List<NewsRs>> getLastNews(String days) {
+        return iexApi.getLastNews(days);
     }
 
     public Call<CompanyRs> getCompanyInfo(String ticker) {

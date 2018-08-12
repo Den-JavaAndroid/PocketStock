@@ -10,8 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jaddev888gmail.pocketstock.R;
 import com.jaddev888gmail.pocketstock.adapters.NewsAdapter;
@@ -55,15 +53,15 @@ public class NewsFragment extends Fragment implements NewsAdapter.ItemClickListe
         restClient = new RestClient();
         newsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        loadNews("aapl");
+        loadNews("25");
         return view;
     }
 
 
-    private void loadNews(String ticker) {
+    private void loadNews(String countDays) {
         progressBar.setVisibility(View.VISIBLE);
         newsRecyclerView.setVisibility(View.INVISIBLE);
-        restClient.getStockNews(ticker).enqueue(new Callback<List<NewsRs>>() {
+        restClient.getLastNews(countDays).enqueue(new Callback<List<NewsRs>>() {
             @Override
             public void onResponse(Call<List<NewsRs>> call, Response<List<NewsRs>> response) {
                 Log.i("INFO", "Responce body: " + response.body().toString());
