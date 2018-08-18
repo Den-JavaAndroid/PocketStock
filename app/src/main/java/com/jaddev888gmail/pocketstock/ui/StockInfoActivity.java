@@ -42,6 +42,10 @@ public class StockInfoActivity extends AppCompatActivity {
 
     private RestClient restClient;
 
+    private String ticker;
+    private CompanyRs companyRs;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,12 +57,19 @@ public class StockInfoActivity extends AppCompatActivity {
         }
 
         Bundle bundle = getIntent().getExtras();
-        String ticker="empty";
         if(bundle != null){
             ticker = bundle.getString("ticker");
         }
         restClient = new RestClient();
-        setCompanyInfo(ticker);
+
+        if(savedInstanceState == null){
+            setCompanyInfo(ticker);
+        } else {
+            ticker = savedInstanceState.getString("ticker");
+            companyRs = (CompanyRs) savedInstanceState.getParcelable("companyInfo");
+            setCompanyInfo(companyRs);
+        }
+
     }
 
 
@@ -67,15 +78,8 @@ public class StockInfoActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<CompanyRs> call, Response<CompanyRs> response) {
                 Log.i("INFO", "Responce body: " + response.body().toString());
-                CompanyRs companyRs =  response.body();
-                companyName.setText(companyRs.getCompanyName());
-                companyName.append(" | " + ticker);
-                exchange.append(companyRs.getExchange());
-                industry.append(companyRs.getIndustry());
-                sector.append(companyRs.getSector());
-                ceo.append(companyRs.getCEO());
-                about.append(companyRs.getDescription());
-
+                companyRs =  response.body();
+                setCompanyInfo(companyRs);
             }
 
             @Override
@@ -84,6 +88,22 @@ public class StockInfoActivity extends AppCompatActivity {
             }
         });
 
+    }
 
+    private void setCompanyInfo(CompanyRs companyRs){
+        companyName.setText(companyRs.getCompanyName());
+        companyName.append(" | " + ticker);
+        exchange.append(companyRs.getExchange());
+        industry.append(companyRs.getIndustry());
+        sector.append(companyRs.getSector());
+        ceo.append(companyRs.getCEO());
+        about.append(companyRs.getDescription());
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString("ticker", ticker);
+        outState.putParcelable("companyInfo", companyRs);
+        super.onSaveInstanceState(outState);
     }
 }

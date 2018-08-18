@@ -1,11 +1,14 @@
 
 package com.jaddev888gmail.pocketstock.model.company;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CompanyRs {
+public class CompanyRs implements Parcelable {
 
     @SerializedName("symbol")
     @Expose
@@ -118,4 +121,50 @@ public class CompanyRs {
         this.tags = tags;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.symbol);
+        dest.writeString(this.companyName);
+        dest.writeString(this.exchange);
+        dest.writeString(this.industry);
+        dest.writeString(this.website);
+        dest.writeString(this.description);
+        dest.writeString(this.cEO);
+        dest.writeString(this.issueType);
+        dest.writeString(this.sector);
+        dest.writeStringList(this.tags);
+    }
+
+    public CompanyRs() {
+    }
+
+    protected CompanyRs(Parcel in) {
+        this.symbol = in.readString();
+        this.companyName = in.readString();
+        this.exchange = in.readString();
+        this.industry = in.readString();
+        this.website = in.readString();
+        this.description = in.readString();
+        this.cEO = in.readString();
+        this.issueType = in.readString();
+        this.sector = in.readString();
+        this.tags = in.createStringArrayList();
+    }
+
+    public static final Parcelable.Creator<CompanyRs> CREATOR = new Parcelable.Creator<CompanyRs>() {
+        @Override
+        public CompanyRs createFromParcel(Parcel source) {
+            return new CompanyRs(source);
+        }
+
+        @Override
+        public CompanyRs[] newArray(int size) {
+            return new CompanyRs[size];
+        }
+    };
 }

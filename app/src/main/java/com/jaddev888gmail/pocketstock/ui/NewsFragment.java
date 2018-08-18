@@ -55,13 +55,20 @@ public class NewsFragment extends Fragment implements NewsAdapter.ItemClickListe
         restClient = new RestClient();
         newsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        loadNews("25");
+        if (savedInstanceState == null) {
+            loadNews("25");
+        } else {
+            newsList = savedInstanceState.getParcelableArrayList("newsList");
+            setNews();
+        }
+
         return view;
     }
 
     private void loadNews(String countDays) {
         new LoadNews().execute(countDays);
     }
+
 
     @Override
     public void onItemClick(NewsRs newsRs) {
@@ -89,10 +96,20 @@ public class NewsFragment extends Fragment implements NewsAdapter.ItemClickListe
 
         @Override
         protected void onPostExecute(String result) {
-            NewsAdapter reciepsAdapter = new NewsAdapter(getContext(), newsList, NewsFragment.this);
-            progressBar.setVisibility(View.INVISIBLE);
-            newsRecyclerView.setVisibility(View.VISIBLE);
-            newsRecyclerView.setAdapter(reciepsAdapter);
+            setNews();
         }
+    }
+
+    private void setNews() {
+        NewsAdapter reciepsAdapter = new NewsAdapter(getContext(), newsList, NewsFragment.this);
+        progressBar.setVisibility(View.INVISIBLE);
+        newsRecyclerView.setVisibility(View.VISIBLE);
+        newsRecyclerView.setAdapter(reciepsAdapter);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList("newsList", newsList);
+        super.onSaveInstanceState(outState);
     }
 }

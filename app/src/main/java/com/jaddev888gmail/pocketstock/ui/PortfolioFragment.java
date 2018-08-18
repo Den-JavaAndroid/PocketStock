@@ -43,7 +43,8 @@ public class PortfolioFragment extends Fragment implements PortfolioAdapter.Item
     RecyclerView stockListRecyclerView;
 
     private ArrayList<PortfolioItem> portfolioItemList;
-
+    private int summStocks = 0;
+    private double summMoney = 0.0;
 
     private static final int LOADER_ID = 0x01;
 
@@ -65,13 +66,15 @@ public class PortfolioFragment extends Fragment implements PortfolioAdapter.Item
         restClient = new RestClient();
         stockListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         getActivity().getSupportLoaderManager().initLoader(LOADER_ID, null, this);
+        if(savedInstanceState != null){
+            summStocks = savedInstanceState.getInt("summStocks");
+        }
         return view;
     }
 
 
     private void loadPortfolioFromDb(Cursor data) {
-        int summStocks = 0;
-        double summMoney = 0.0;
+
 
         if (data.getCount() != 0) {
             portfolioItemList = new ArrayList<>();
@@ -124,5 +127,12 @@ public class PortfolioFragment extends Fragment implements PortfolioAdapter.Item
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt("summStocks",summStocks);
+        outState.putParcelableArrayList("portfolioItemList", portfolioItemList);
+        super.onSaveInstanceState(outState);
     }
 }
