@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.jaddev888gmail.pocketstock.R;
 import com.jaddev888gmail.pocketstock.model.news.NewsRs;
-import com.jaddev888gmail.pocketstock.ui.NewsFragment;
 
 import java.util.ArrayList;
 

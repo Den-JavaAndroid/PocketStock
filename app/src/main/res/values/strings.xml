@@ -33,5 +33,6 @@
     <string name="countstock">countStock</string>
     <string name="shares">Shares %1d</string>
     <string name="buy_price">Buy price %.02f</string>
+    <string name="add_stock_to_the_portfolio">Add stock to the portfolio</string>
 
 </resources>

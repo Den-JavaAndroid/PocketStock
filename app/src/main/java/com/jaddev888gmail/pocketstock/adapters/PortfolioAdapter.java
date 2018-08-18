@@ -9,12 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jaddev888gmail.pocketstock.R;
 import com.jaddev888gmail.pocketstock.model.news.PortfolioItem;
-import com.jaddev888gmail.pocketstock.ui.AddStockActivity;
-import com.jaddev888gmail.pocketstock.ui.PortfolioFragment;
 import com.jaddev888gmail.pocketstock.ui.StockInfoActivity;
 
 import java.util.ArrayList;
