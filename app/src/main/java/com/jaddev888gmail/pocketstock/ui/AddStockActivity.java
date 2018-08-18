@@ -1,6 +1,9 @@
 package com.jaddev888gmail.pocketstock.ui;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v7.app.ActionBar;
@@ -94,6 +97,16 @@ public class AddStockActivity extends AppCompatActivity {
                                 portfolioItemValues.put(PortfolioContract.PortfolioEntry.STOCK_COUNT, Integer.parseInt(stockCount));
                                 getContentResolver().insert(PortfolioContentProvider.URI_PORTFOLIO, portfolioItemValues);
                             }
+
+
+                            //automatically update widget info
+                            Intent intent = new Intent(AddStockActivity.this, MyWidgetProvider.class);
+                            intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+                            int[] ids = AppWidgetManager.getInstance(getApplication())
+                                    .getAppWidgetIds(new ComponentName(getApplication(), MyWidgetProvider.class));
+                            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+                            sendBroadcast(intent);
+
                             Toast.makeText(AddStockActivity.this, getResources().getString(R.string.message_for_add_stock, stockCount, stockSymbol), Toast.LENGTH_LONG).show();
                         } else
                             Toast.makeText(AddStockActivity.this, getResources().getString(R.string.not_price_for_add_stock, stockSymbol), Toast.LENGTH_LONG).show();
