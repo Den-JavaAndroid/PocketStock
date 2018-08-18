@@ -36,6 +36,7 @@ public class MyWidgetProvider extends AppWidgetProvider {
                 summStocks = summStocks + countStocks;
                 summMoney = summMoney + data.getDouble(2) * countStocks;
             }
+            data.close();
 
             String formattedSummMoney = String.format("%.2f", summMoney);
 

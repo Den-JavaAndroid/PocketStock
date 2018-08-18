@@ -31,7 +31,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:padding="@dimen/text_view_padding"
-        android:text="0$"
+        android:text="@string/initial_money"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/stock_list"
         app:layout_constraintEnd_toStartOf="@+id/summ_stocks"
@@ -39,7 +39,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/total_money"
-        app:layout_constraintVertical_bias="0.462" />
+        app:layout_constraintVertical_bias="0.462"
+        android:layout_marginRight="8dp" />
 
     <TextView
         android:id="@+id/summ_stocks"
@@ -51,7 +52,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginTop="8dp"
         android:padding="@dimen/text_view_padding"
-        android:text="0 stocks"
+        android:text="@string/initial_stocks"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/stock_list"
         app:layout_constraintEnd_toEndOf="parent"

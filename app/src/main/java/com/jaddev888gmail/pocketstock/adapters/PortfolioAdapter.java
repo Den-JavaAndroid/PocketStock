@@ -43,8 +43,8 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.stockName.setText(portfolioItems.get(position).getTicker());
-        holder.count.setText("Shares " + portfolioItems.get(position).getStockCount());
-        holder.price.setText("Buy price " + portfolioItems.get(position).getStockPrice());
+        holder.count.setText(context.getResources().getString(R.string.shares, portfolioItems.get(position).getStockCount()));
+        holder.price.setText(context.getResources().getString(R.string.buy_price, portfolioItems.get(position).getStockPrice()));
     }
 
     @Override

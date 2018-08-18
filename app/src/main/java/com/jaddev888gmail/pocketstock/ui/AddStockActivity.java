@@ -61,9 +61,13 @@ public class AddStockActivity extends AppCompatActivity {
         Cursor cursor = getContentResolver().query(PortfolioContentProvider.URI_PORTFOLIO, null,
                 PortfolioContract.PortfolioEntry.STOCK_SYMBOL + "=?", new String[]{String.valueOf(stockSymbol)},
                 null);
-        cursor.moveToNext();
-        Integer countStock = cursor.getInt(1);
-        return countStock;
+        if (cursor != null) {
+            cursor.moveToNext();
+            Integer countStock = cursor.getInt(1);
+            cursor.close();
+            return countStock;
+        }
+        return 0;
     }
 
 

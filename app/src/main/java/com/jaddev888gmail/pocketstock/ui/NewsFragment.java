@@ -56,7 +56,7 @@ public class NewsFragment extends Fragment implements NewsAdapter.ItemClickListe
         newsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         if (savedInstanceState == null) {
-            loadNews("25");
+            loadNews("25"); //load news for last 25 days
         } else {
             newsList = savedInstanceState.getParcelableArrayList("newsList");
             setNews();
@@ -65,8 +65,8 @@ public class NewsFragment extends Fragment implements NewsAdapter.ItemClickListe
         return view;
     }
 
-    private void loadNews(String countDays) {
-        new LoadNews().execute(countDays);
+    private void loadNews(String countDaysForNews) {
+        new LoadNews().execute(countDaysForNews);
     }
 
 
