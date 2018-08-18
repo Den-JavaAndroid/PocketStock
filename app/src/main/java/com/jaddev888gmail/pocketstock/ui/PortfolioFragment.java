@@ -85,13 +85,13 @@ public class PortfolioFragment extends Fragment implements PortfolioAdapter.Item
                 portfolioItem.setStockPrice(data.getDouble(2));
                 portfolioItemList.add(portfolioItem);
             }
-            totalStocks.setText("Bought shares\n" + summStocks);
+            totalStocks.setText(getResources().getString(R.string.bought_shares)+"\n" + summStocks);
             String formattedSummMoney = String.format("%.2f", summMoney);
-            totalMoney.setText("Invested money \n" + formattedSummMoney + "$");
+            totalMoney.setText(getResources().getString(R.string.invested_money)+"\n"  + formattedSummMoney + "$");
             PortfolioAdapter portfolioAdapter = new PortfolioAdapter(getContext(), portfolioItemList, PortfolioFragment.this);
             stockListRecyclerView.setAdapter(portfolioAdapter);
         } else {
-            Toast.makeText(getContext(), "PORTFOLIO IS EMPTY. ADD STOCKS.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), getResources().getString(R.string.empty_portfolio_message), Toast.LENGTH_LONG).show();
         }
     }
 

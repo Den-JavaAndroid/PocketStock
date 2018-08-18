@@ -53,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Add stock to portfolio", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
 
                 sTracker.send(new HitBuilders.EventBuilder()
                         .setCategory("Action")
@@ -95,12 +93,7 @@ public class MainActivity extends AppCompatActivity {
         sTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

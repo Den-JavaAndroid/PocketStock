@@ -6,7 +6,11 @@
     <string name="total_money">Total money</string>
     <string name="total_stocks">Total stocks</string>
     <string name="widget_label">My stock portfolio</string>
+    <string name="bought_shares">Bought shares</string>
+    <string name="invested_money">Invested money</string>
+    <string name="empty_portfolio_message">"PORTFOLIO IS EMPTY. ADD STOCKS."</string>
 
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="open_news">Open news</string>
 
 </resources>
