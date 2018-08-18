@@ -12,5 +12,9 @@
 
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
     <string name="open_news">Open news</string>
+    <string name="message_for_add_stock" >"%1$s shares of %2$s added to the portfolio"</string>
+    <string name="not_price_for_add_stock">"%1$s not exist on market. Please check your choose."</string>
+    <string name="not_ticker_message">Please, enter the stock symbol</string>
+    <string name="not_count_message">Please enter the number of shares</string>
 
 </resources>

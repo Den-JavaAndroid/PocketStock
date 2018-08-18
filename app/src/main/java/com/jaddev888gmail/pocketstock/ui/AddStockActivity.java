@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +19,7 @@ import com.jaddev888gmail.pocketstock.network.RestClient;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,12 +45,6 @@ public class AddStockActivity extends AppCompatActivity {
         }
 
         restClient = new RestClient();
-        addStockButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveStockInDb();
-            }
-        });
     }
 
     //check that portfolio contains same stock.
@@ -67,47 +63,55 @@ public class AddStockActivity extends AppCompatActivity {
         return countStock;
     }
 
-    private String saveStockInDb() {
+
+    @OnClick(R.id.add_stock_button)
+    void saveStockInDb() {
 
         final String stockSymbol = stockSymbolInput.getText().toString();
         final String stockCount = stockCountInput.getText().toString();
-        final Double[] price = new Double[1];
-        restClient.getPrice(stockSymbol).enqueue(new Callback<Double>() {
-            @Override
-            public void onResponse(Call<Double> call, Response<Double> response) {
-                price[0] = response.body();
-                ContentValues portfolioItemValues = new ContentValues();
 
-                if (price[0] != null) {
-                    portfolioItemValues.put(PortfolioContract.PortfolioEntry.STOCK_PRICE, price[0]);
+        if (!TextUtils.isEmpty(stockSymbol)) {
+            if (!TextUtils.isEmpty(stockCount)) {
+                final Double[] price = new Double[1];
+                restClient.getPrice(stockSymbol).enqueue(new Callback<Double>() {
+                    @Override
+                    public void onResponse(Call<Double> call, Response<Double> response) {
+                        price[0] = response.body();
+                        ContentValues portfolioItemValues = new ContentValues();
 
-                    if (hasStockInPortfolio(stockSymbol)) {
-                        Integer newStockCount = Integer.valueOf(stockCount) + getCountStockInPortfolio(stockSymbol);
+                        if (price[0] != null) {
+                            portfolioItemValues.put(PortfolioContract.PortfolioEntry.STOCK_PRICE, price[0]);
 
-                        portfolioItemValues.put(PortfolioContract.PortfolioEntry.STOCK_SYMBOL, stockSymbol);
-                        portfolioItemValues.put(PortfolioContract.PortfolioEntry.STOCK_COUNT, newStockCount);
-                        getContentResolver().update(Uri.parse(PortfolioContentProvider.URI_PORTFOLIO + "/" + stockSymbol), portfolioItemValues, null, null);
+                            if (hasStockInPortfolio(stockSymbol)) {
+                                Integer newStockCount = Integer.valueOf(stockCount) + getCountStockInPortfolio(stockSymbol);
 
-                    } else {
-                        portfolioItemValues.put(PortfolioContract.PortfolioEntry.STOCK_SYMBOL, stockSymbol);
-                        portfolioItemValues.put(PortfolioContract.PortfolioEntry.STOCK_COUNT, Integer.parseInt(stockCount));
-                        getContentResolver().insert(PortfolioContentProvider.URI_PORTFOLIO, portfolioItemValues);
+                                portfolioItemValues.put(PortfolioContract.PortfolioEntry.STOCK_SYMBOL, stockSymbol);
+                                portfolioItemValues.put(PortfolioContract.PortfolioEntry.STOCK_COUNT, newStockCount);
+                                getContentResolver().update(Uri.parse(PortfolioContentProvider.URI_PORTFOLIO + "/" + stockSymbol), portfolioItemValues, null, null);
+
+                            } else {
+                                portfolioItemValues.put(PortfolioContract.PortfolioEntry.STOCK_SYMBOL, stockSymbol);
+                                portfolioItemValues.put(PortfolioContract.PortfolioEntry.STOCK_COUNT, Integer.parseInt(stockCount));
+                                getContentResolver().insert(PortfolioContentProvider.URI_PORTFOLIO, portfolioItemValues);
+                            }
+                            Toast.makeText(AddStockActivity.this, getResources().getString(R.string.message_for_add_stock, stockCount, stockSymbol), Toast.LENGTH_LONG).show();
+                        } else
+                            Toast.makeText(AddStockActivity.this, getResources().getString(R.string.not_price_for_add_stock, stockSymbol), Toast.LENGTH_LONG).show();
+                        finish();
                     }
 
-                    Toast.makeText(AddStockActivity.this, stockCount + " shares of " + stockSymbol +
-                            " added to the portfolio", Toast.LENGTH_LONG).show();
-                } else
-                    Toast.makeText(AddStockActivity.this, stockSymbol + " not exist on market. Please check your choose.", Toast.LENGTH_LONG).show();
-                finish();
+                    @Override
+                    public void onFailure(Call call, Throwable t) {
+                        price[0] = 0.0;
+                    }
+                });
+            } else {
+                Toast.makeText(AddStockActivity.this, getResources().getString(R.string.not_count_message), Toast.LENGTH_LONG).show();
 
             }
+        } else {
+            Toast.makeText(AddStockActivity.this, getResources().getString(R.string.not_ticker_message), Toast.LENGTH_LONG).show();
+        }
 
-            @Override
-            public void onFailure(Call call, Throwable t) {
-                price[0] = 0.0;
-            }
-        });
-
-        return String.valueOf(price[0]);
     }
 }
